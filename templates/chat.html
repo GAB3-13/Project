@@ -1,0 +1,99 @@
+{% extends "home.html" %}
+
+{% block styles %}
+<style>
+    .chat-container {
+        width: 400px;
+        margin: 0 auto;
+    }
+
+    .chat-messages {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .chat-message {
+        margin-bottom: 10px;
+    }
+
+    .sender-message {
+        text-align: right;
+    }
+
+    .receiver-message {
+        text-align: left;
+    }
+
+    .message-text {
+        background-color: lightgray;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .message-timestamp {
+        font-size: 12px;
+        color: gray;
+    }
+
+    .chat-form {
+        margin-top: 10px;
+    }
+
+    .chat-input {
+        width: 300px;
+        padding: 5px;
+    }
+
+    .chat-submit {
+        padding: 5px 10px;
+        background-color: lightblue;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="dropdown">
+            <form id="receiver-form" method="POST" action="/receiver">
+            <select id="receiver-select" name="receiver_id">
+                <option value="">Select a receiver</option>
+                <optgroup label="Vendors">
+                    {% for vendor in vendors %}
+                        <option value="{{ vendor[0] }}">{{ vendor[1] }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Admins">
+                    {% for admin in admins %}
+                        <option value="{{ admin[0] }}">{{ admin[1] }}</option>
+                    {% endfor %}
+                </optgroup>
+            </select>
+            <button class="chat-submit" type="submit">Start Chat</button>
+        </form>
+    </div>
+    <ul class="chat-messages">
+        {% for chat_message in chat_messages %}
+            <li class="chat-message {% if chat_message.sender_id == current_user_id %}sender-message{% else %}receiver-message{% endif %}">
+                <div class="message-text">
+                    {{ chat_message[3] }}
+                    <p class="message-timestamp">{{ chat_message.timestamp }}</p>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <form id="chat-form" class="chat-form" method="POST" action="/chat">
+        <input class="chat-input" id="message-input" type="text" name="message" placeholder="Type your message" required>
+        <input id="receiver-id" type="hidden" name="receiver_id" value="{{ receiver_id }}">
+        <button class="chat-submit" type="submit">Send</button>
+    </form>
+</div>
+{% endblock %}
+

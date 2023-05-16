@@ -1,0 +1,132 @@
+{% extends "home.html" %}
+{% block styles %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .product-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px; /* Adjust as needed */
+  }
+
+  .product-image {
+    margin-right: 20px;
+  }
+
+  .admindisplay-img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .product-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .product-description {
+    margin-bottom: 10px;
+  }
+
+  .product-price {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  #product-size {
+    width: 200px; /* Adjust the width as needed */
+  }
+
+  .product-buttons {
+    margin-top: 20px;
+  }
+
+  .add-to-cart {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .add-to-wishlist {
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .reviews-section {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .review {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 300px; /* Adjust as needed */
+    box-sizing: border-box;
+  }
+
+  .review p {
+    margin: 5px 0;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="product-container">
+  <div class="product-image">
+    <img src="{{ item[0][3] }}" class="admindisplay-img" alt="Product Image">
+  </div>
+  <div class="product-info">
+    <h2 class="product-title">{{ item[0][1] }}</h2>
+    <p class="product-description">{{ item[0][2] }}</p>
+    <p class="product-price">${{ item[0][6] }} USD</p>
+    <label for="product-size">Select Size:</label>
+    <select id="product-size" name="product-size">
+      {% for row in item %}
+      <option value="{{ row[7] }}">{{ row[7] }} ({{ row[8] }} left)</option>
+      {% endfor %}
+    </select>
+
+    <div class="product-buttons">
+      <button class="add-to-cart" onclick="addToCart()">Add to Cart</button>
+      <a href="/addwish?id={{ item[0][0] }}">
+        <button class="add-to-wishlist">Add to Wishlist</button>
+      </a>
+    </div>
+    <div class="reviews-section">
+      <h3>Customer Reviews</h3>
+      <br>
+      {% for review in reviews %}
+      <div class="review">
+        <p>User: {{ review.username }}</p>
+        <p>Item: {{ review.description }}/5</p>
+        <p>Rating: {{ review.rating }}/5</p>
+        <p>Comment: {{ review.comment }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function addToCart() {
+    var selectedSize = document.getElementById("product-size").value;
+    var addCartLink = "/addcart?id={{ item[0][0] }}&size=" + selectedSize;
+    window.location.href = addCartLink;
+  }
+</script>
+
+{% endblock %}

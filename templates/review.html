@@ -1,0 +1,110 @@
+{% extends "home.html" %}
+
+{% block styles %}
+    <style>
+        .review-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .review-details {
+            margin-bottom: 20px;
+        }
+
+        .review-details p {
+            margin: 5px 0;
+        }
+
+        .rating-container {
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            color: gray;
+        }
+
+        .stars .star {
+            cursor: pointer;
+        }
+
+        .stars .star.selected {
+            color: yellow;
+        }
+
+        .comment-container {
+            margin-bottom: 20px;
+        }
+
+        .comment-container textarea {
+            width: 100%;
+        }
+
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .item-row {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .pimg
+        {
+            height: 200px;
+            width: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="/submit_review" method="POST">
+        <div class="review-container">
+            <h1>Leave a Review</h1>
+            <div class="review-details">
+                <p>Item: {{ item.title }}</p>
+                <p>Description: {{ item.description }}</p>
+                <p><img src="{{ item.image }}" alt="Product Image" class="pimg"></p>
+                <p>Price: {{ item.price }}</p>
+                <p>Vendor: {{ item.vendor }}</p>
+
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <input type="hidden" name="vendor" value="{{ item.vendor }}">
+            </div>
+            <div class="rating-container">
+                <p>Rating:</p>
+                <div class="stars">
+                    <span class="star" onclick="selectRating(1)" data-rating="1">&#9733;</span>
+                    <span class="star" onclick="selectRating(2)" data-rating="2">&#9733;</span>
+                    <span class="star" onclick="selectRating(3)" data-rating="3">&#9733;</span>
+                    <span class="star" onclick="selectRating(4)" data-rating="4">&#9733;</span>
+                    <span class="star" onclick="selectRating(5)" data-rating="5">&#9733;</span>
+                </div>
+                <input type="hidden" id="rating" name="rating" value="0">
+            </div>
+            <div class="comment-container">
+                <p>Comment:</p>
+                <textarea id="comment" name="comment" rows="5" cols="50"></textarea>
+            </div>
+            <button type="submit" class="submit-button">Submit Review</button>
+        </div>
+    </form>
+
+    <script>
+        function selectRating(rating) {
+            document.getElementById("rating").value = rating;
+            const stars = document.getElementsByClassName("star");
+            for (let i = 0; i < stars.length; i++) {
+                if (i < rating) {
+                    stars[i].classList.add("selected");
+                } else {
+                    stars[i].classList.remove("selected");
+                }
+            }
+        }
+    </script>
+{% endblock %}

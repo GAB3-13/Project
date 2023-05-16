@@ -1,0 +1,53 @@
+{% extends "home.html" %}
+
+{% block content %}
+
+<div class="popup" id="popup-size">
+  <div class="content">
+    <form id="size-form" action="/addsize" method="POST">
+      <input type="hidden" name="product_id" value="{{ product_id }}">
+
+      <div id="size-fields">
+        <div class="size-field">
+          <label>Size:</label>
+          <input type="text" name="size[]" required>
+          <label>Inventory:</label>
+          <input type="number" name="inventory[]" required>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="add-size-btn">Add Size</button>
+      <button type="submit" class="btn btn-secondary">Done</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('add-size-btn').addEventListener('click', function() {
+    var sizeField = document.createElement('div');
+    sizeField.classList.add('size-field');
+
+    var sizeLabel = document.createElement('label');
+    sizeLabel.textContent = 'Size:';
+    var sizeInput = document.createElement('input');
+    sizeInput.type = 'text';
+    sizeInput.name = 'size[]';
+    sizeInput.required = true;
+
+    var inventoryLabel = document.createElement('label');
+    inventoryLabel.textContent = 'Inventory:';
+    var inventoryInput = document.createElement('input');
+    inventoryInput.type = 'number';
+    inventoryInput.name = 'inventory[]';
+    inventoryInput.required = true;
+
+    sizeField.appendChild(sizeLabel);
+    sizeField.appendChild(sizeInput);
+    sizeField.appendChild(inventoryLabel);
+    sizeField.appendChild(inventoryInput);
+
+    document.getElementById('size-fields').appendChild(sizeField);
+  });
+</script>
+
+{% endblock %}

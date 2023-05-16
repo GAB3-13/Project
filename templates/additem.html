@@ -1,0 +1,29 @@
+{% extends "home.html" %}
+
+{% block content %}
+
+<div class="popup" id="popup">
+  <div class="content">
+<form id="size-form" action="/additem" method="POST">
+<input type="hidden" name="product_id" value="{{ product_id }}" />
+      <label>Title:</label>
+      <input type="text" name="title" required>
+      <label>Description:</label>
+      <input type="text" name="description" required>
+      <label>Image:</label>
+      <input type="text" name="image" required>
+      <label>Category:</label>
+      <select name="category" required>
+        <option value="">-- Select Category --</option>
+        <option value="Menswear">Menswear</option>
+        <option value="Womenswear">Womenswear</option>
+        <option value="Items">Items</option>
+      </select>
+      <label>Price:</label>
+      <input type="number" name="price" required>
+      <button type="submit" class="btn btn-primary" id="add-item-btn">Add Item</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

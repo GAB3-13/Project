@@ -1,0 +1,56 @@
+{% extends "home.html" %}
+
+{% block styles %}
+<style>
+  /* Add your custom CSS styles here */
+  .complaint-form {
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .complaint-form img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .complaint-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .complaint-form textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .complaint-form button {
+    padding: 10px 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="complaint-form">
+  <img src="{{ item.image }}" alt="Product Image">
+  <h3>{{ item.title }}</h3>
+  <p>{{ item.description }}</p>
+
+  <form action="/returns" method="POST">
+  <input type="hidden" name="order_id" value="{{ order_id }}">
+  <input type="hidden" name="product_id" value="{{ product_id }}">
+    <label for="complaint-type">Complaint Type:</label>
+    <select id="complaint-type" name="complaint_type" required>
+      <option value="return">Return</option>
+      <option value="refund">Refund</option>
+    </select>
+       <label>Title:</label>
+      <input type="text" name="title" required>
+        <label for="complaint-comment">Comment:</label>
+    <textarea id="complaint-comment" name="complaint_comment" required></textarea>
+
+    <button type="submit">Submit Complaint</button>
+  </form>
+</div>
+{% endblock %}

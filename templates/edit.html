@@ -1,0 +1,33 @@
+{% extends "home.html" %}
+
+{% block content %}
+<div class="popup" id="popup">
+	<div class="content">
+		<form method='post'  action="/edit" enctype="multipart/form-data">
+			<h1>Editing this item</h1>
+			<img src="{{ item[2] }}" class="admindisplay-img"><br>
+
+			<label>Id:</label>
+			<input type="text" name="id" value="{{ id }}" placeholder="{{ id }}" required>
+			<label>Title:</label>
+			<input type="text" name="title" value="{{ item[0] }}" placeholder="{{ item[0] }}" required>
+			<label>Description:</label>
+			<input type="text" name="description" value="{{ item[1] }}" placeholder="{{ item[1] }}" required>
+			<label>Image Link:</label>
+			<input type="text" name="image" value="{{ item[2] }}" placeholder="{{ item[2] }}" required>
+			<label>Category:</label>
+			<select name="category" required>
+				<option value="">-- Select Category --</option>
+				<option value="Menswear" {% if item[3] == 'Menswear' %}selected{% endif %}>Menswear</option>
+				<option value="Womenswear" {% if item[3] == 'Womenswear' %}selected{% endif %}>Womenswear</option>
+				<option value="Items" {% if item[3] == 'Items' %}selected{% endif %}>Items</option>
+			</select>
+			<label>Inventory:</label>
+			<input type="number" name="inventory" value="{{ item[4] }}" placeholder="{{ item[4] }}" required>
+			<label>Price:</label>
+			<input type="number" name="price" value="{{ item[5] }}" placeholder="{{ item[5] }}" required>
+			<button type="submit" class="btn btn-primary">Edit This Item</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "home.html" %}
+
+{% block content %}
+
+<style>
+.checkout-container {
+  display: flex;
+<!--  background-color: blue;-->
+}
+
+.payment-form {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.cart-items,
+.order-summary {
+  flex: 1;
+}
+
+.cart-items ul,
+.order-summary ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cart-items li,
+.order-summary li {
+  margin-bottom: 10px;
+}
+
+.order-summary li:last-child {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    flex-direction: column;
+  }
+
+  .payment-form {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+</style>
+
+<div class="checkout-container">
+    <div class="payment-form">
+        <h2>Payment Information</h2>
+        <form action="/order_complete" method="POST">
+            <label for="cardholder-name">Cardholder Name</label>
+            <br>
+            <input type="text" id="cardholder-name" name="cardholder-name" required>
+<br>
+            <label for="card-number">Card Number</label>
+            <br>
+            <input type="text" id="card-number" name="card-number" required>
+            <br>
+
+            <label for="expiration-date">Expiration Date</label>
+            <br>
+            <input type="text" id="expiration-date" name="expiration-date" required>
+            <br>
+
+            <label for="cvv">CVV</label>
+            <br>
+            <input type="text" id="cvv" name="cvv" required>
+            <br>
+
+            <button type="submit" class="pay-button">Pay</button>
+        </form>
+    </div>
+
+    <div class="cart-items">
+        <h2>Cart</h2>
+        <ul>
+            {% for item in items %}
+            <li>
+                <img class="cart-item-image" src="{{ item.image }}" alt="{{ item.title }} ">
+                <div class="item-details">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.description }}</p>
+                    <p>Size: {{ item.size }}</p>
+                    <p>Price: ${{ item.price }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="order-summary">
+        <h2>Order Summary</h2>
+        <ul>
+            {% for item in items %}
+            <li>{{ item.title }} - ${{ item.price }}</li>
+            {% endfor %}
+            <li>Shipping: (free)</li>
+            <li>Total: ${{ total }}</li>
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

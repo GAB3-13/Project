@@ -1,0 +1,63 @@
+{% extends "home.html" %}
+
+{% block content %}
+    <h1>Admin Login</h1>
+    {% for item in items %}
+        <div class="admindisplay">
+            <img src="{{ item.image }}" class="admindisplay-img"><br>
+            <strong>{{ item.name }}</strong><br>
+            <em>{{ item.title }}</em><br>
+            {{ item.description }}<br>
+            <strong>Category:</strong> {{ item.category }}<br>
+            <strong>Inventory:</strong> {{ item.inventory }}<br>
+            <strong>Price:</strong> ${{ item.price }}<br>
+            <p>Id:{{ item.id }}</p>
+            <form method="POST" action="/delete">
+                <input type="hidden" name="id" value="{{ item.id }}">
+                <button type="submit" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+            </form>
+            <a href="/edit?id={{ item.id }}"><button>Edit</button></a>
+        </div>
+    {% endfor %}
+    <br>
+    <button><a href="/additem">Add Item</a></button>
+
+    <h2>Returns/Refunds</h2>
+    <table>
+        <tr>
+            <th>Return ID</th>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Product ID</th>
+            <th>Return Type</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Demand</th>
+            <th>Status</th>
+        </tr>
+        {% for return in returns %}
+            <tr>
+                <td>{{ return.return_id }}</td>
+                <td>{{ return.order_id }}</td>
+                <td>{{ return.user_id }}</td>
+                <td>{{ return.product_id }}</td>
+                <td>{{ return.return_type }}</td>
+                <td>{{ return.title }}</td>
+                <td>{{ return.description }}</td>
+                <td>{{ return.demand }}</td>
+                <td>
+                    <form method="POST" action="/update_status">
+                        <input type="hidden" name="return_id" value="{{ return.return_id }}">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="Pending" {% if return.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Rejected" {% if return.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            <option value="Confirmed" {% if return.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                            <option value="Processing" {% if return.status == 'Processing' %}selected{% endif %}>Processing</option>
+                            <option value="Complete" {% if return.status == 'Complete' %}selected{% endif %}>Complete</option>
+                        </select>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

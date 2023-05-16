@@ -1,0 +1,31 @@
+
+{% extends "home.html" %}
+
+{% block content %}
+
+<h1>Your Wishlist</h1>
+  {% for item in items %}
+<div class="cart-items">
+  <div class="cart-item">
+    <img src="{{item.image}}" alt="Product Image" class="cart-item-image">
+    <div class="cart-item-info">
+      <h3 class="cart-item-title">{{item.title}}</h3>
+      <p class="cart-item-description">{{item.description}}</p>
+      <p class="cart-item-description">Size: {{item.size}}</p>
+<!--      <p class="cart-item-description">{{item.cart_id}}</p>-->
+      <div class="cart-item-colors">
+        <div class="cart-item-color cart-item-white"></div>
+        <div class="cart-item-color cart-item-black"></div>
+      </div>
+      <p class="cart-item-price">{{ item.price }}</p>
+      <a href="/info?id={{ item.product_id }}">View Details</a>
+      <input type="number" min="1" value="1" class="cart-item-quantity">
+      <form action="/removeitem" method="POST">
+        <input type="hidden" name="cart_id" value="{{ item.cart_id}}">
+        <button type="submit" class="cart-item-remove">Remove</button>
+      </form>
+    </div>
+  </div>
+</div>
+  {% endfor %}
+{% endblock %}
