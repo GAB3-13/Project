@@ -1,10 +1,91 @@
-
 {% extends "home.html" %}
 
 {% block content %}
 
+<style>
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .cart-item-image {
+    max-width: 100px;
+    max-height: 200px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 5px;
+  }
+
+  .cart-item-info {
+    flex-grow: 1;
+  }
+
+  .cart-item-title {
+    margin-bottom: 5px;
+  }
+
+  .cart-item-description {
+    margin-bottom: 5px;
+  }
+
+  .cart-item-price {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .cart-item-remove {
+    padding: 5px 10px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .cart-checkout {
+    display: block;
+
+    margin:0 auto;
+    margin-bottom:50px;
+    margin-top:50px;
+
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .cart-checkout:hover {
+    background-color: #555;
+  }
+    footer {
+    width: 99%;
+<!--    position: fixed;-->
+    margin-top:50px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: black;
+    padding: 20px;
+}
+</style>
+
 <h1>Your Cart</h1>
-  {% for item in items %}
+{% for item in items %}
 <div class="cart-items">
   <div class="cart-item">
     <img src="{{item.image}}" alt="Product Image" class="cart-item-image">
@@ -12,14 +93,8 @@
       <h3 class="cart-item-title">{{item.title}}</h3>
       <p class="cart-item-description">{{item.description}}</p>
       <p class="cart-item-description">Size: {{item.size}}</p>
-<!--      <p class="cart-item-description">b{{item.cart_id}}</p>-->
-<!--      <div class="cart-item-colors">-->
-<!--        <div class="cart-item-color cart-item-white"></div>-->
-<!--        <div class="cart-item-color cart-item-black"></div>-->
-<!--      </div>-->
       <p class="cart-item-price">{{ item.price }}</p>
       <a href="/info?id={{ item.product_id }}">View Details</a>
-      <input type="number" min="1" value="1" class="cart-item-quantity">
       <form action="/removeitem" method="POST">
         <input type="hidden" name="cart_id" value="{{ item.cart_id}}">
         <button type="submit" class="cart-item-remove">Remove</button>
@@ -27,10 +102,10 @@
     </div>
   </div>
 </div>
-  {% endfor %}
+{% endfor %}
 
 <form action="/checkout" method="POST">
   <button type="submit" class="cart-checkout">Checkout</button>
 </form>
 
-    {% endblock %}
+{% endblock %}

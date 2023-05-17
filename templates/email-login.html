@@ -1,8 +1,71 @@
 {% extends "home.html" %}
 
 {% block content %}
+
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+  }
+
+  .container {
+    max-width: 500px;
+    background-color: #fff;
+    padding: 0 80px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+.row-justify-content-center
+{
+margin-top: 200px;
+}
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .input-group {
+    position: relative;
+  }
+
+  .form-control {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+
+  .btn-primary {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: #555;
+  }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: black;
+    padding: 20px;
+}
+</style>
+
 <div class="container">
-  <div class="row justify-content-center">
+  <div class="row-justify-content-center">
     <div class="col-md-6">
       <form action="/login/email-login" method="POST">
         <div class="form-group">
@@ -23,4 +86,5 @@
     </div>
   </div>
 </div>
+
 {% endblock %}

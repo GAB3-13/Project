@@ -1,46 +1,49 @@
+
 {% extends "home.html" %}
 
 {% block content %}
 <style>
 body {
-  background-color: #f1f1f1;
+  background-color: white;
 }
 
 .flex-container {
   display: flex;
   justify-content: space-between;
   height:300px;
-
 }
 
 .imgcontainer {
-
   width:100%;
-  height: 300px;
-  background-image: url('../static/images/editorial.jpg');
+  height: 500px;
+  background-image: url('https://i.gifer.com/6ZZj.gif');
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto 100%;
-  opacity: 0.8;
+margin-top: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .message {
-  color: red;
-  font-size: 24px;
+font-family: 'Source Serif Pro', serif;
+  font-weight: bold;
+  color: black;
+  font-size: 35px;
   margin-top: 20px;
 }
 
 .button {
-  background-color: red;
+  background-color: black;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 22px;
+  margin-top: 60px;
+  margin-left: 100px;
+
   cursor: pointer;
 }
 
@@ -71,48 +74,192 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  font-size: 22px;
   color: white;
 }
 
 .deals {
-background-color:black;
-<!--  background-image: url('path/to/deals.jpg');-->
+  background-color:black;
+  background-image: url('https://www.gqmiddleeast.com/cloud/2022/09/27/2022-08-09_RO_DUBAI_05-1024x683.jpg');
 }
 
 .mens {
-background-color:black;
-  background-image: url('path/to/mens.jpg');
+  background-color:black;
+  background-image: url('https://i.mdel.net/i/db/2012/6/100999/100999-800w.jpg');
 }
 
 .womens {
-background-color:black;
-  background-image: url('path/to/womens.jpg');
+  background-color:black;
+  background-image: url('https://www.sz-mag.com/wp-content/uploads/2017/10/Yana-Bardadim-Editorial_2017_StyleZeitgeist-4-736x1030.jpg');
 }
 
 .items {
-background-color:black;
-  background-image: url('path/to/items.jpg');
+  background-color:black;
+  background-image: url('https://images.unsplash.com/photo-1590739225287-bd31519780c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJhZGF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60');
+}
+
+.newest-items-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.newest-item {
+  max-width: 300px;
+  height:300px;}
+.newitems
+{
+  text-align: center;
+
+
+}
+.newest-item img {
+  max-width: 200px;
+  max-height: 250px;
+}
+
+.newest-item-title {
+font-family: 'Source Serif Pro', serif;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  color:black;
+}
+
+.newest-item-description {
+font-family: 'Source Serif Pro', serif;
+  text-decoration: none;
+  font-size: 14px;
+  color: #888;
+  margin-top: 5px;
+    color:black;
+}
+
+.shop-all-button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  left: 50%;
+}
+
+.shop-all-button:hover {
+  background-color: darkred;
+}
+.section-container {
+margin-top:70px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+  margin: 80px auto;
+
+}
+
+.section-image img {
+  max-width: 400px;
+  max-height: auto;
+}
+
+.section-content {
+
+  width: 40%;
+}
+
+.section-content h2 {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.section-content p {
+font-family: 'Source Serif Pro', serif;
+  font-size: 16px;
+  color: #888;
+}
+
+.section-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 10px;
 }
 </style>
 
+<!-- Existing code -->
+
 <div class="imgcontainer">
   <div>
-    <p class="message">Hot Items</p>
-    <button class="button">Shop Now</button>
+    <h1 class="message">A home For Creatives</h1>
+<!--    <p class="message">Buy and Sell with the world's greatest high fashion e-commerce platform.</p>-->
+
+    <a href="/"><button class="button">Shop Now</button></a>
   </div>
 </div>
+<br>
 <div class="categorycontainer">
   <div class="category deals">
-    <div class="category-content">Deals</div>
+    <a href=""><div class="category-content" style="color:black;">Deals</div></a>
   </div>
   <div class="category mens">
-    <div class="category-content">Mens</div>
+    <a href="/Menswear"><div class="category-content">Mens</div></a>
   </div>
   <div class="category womens">
-    <div class="category-content">Womens</div>
+    <a href="/Womenswear"><div class="category-content">Womens</div></a>
   </div>
   <div class="category items">
-    <div class="category-content">Items</div>
+    <a href="/Items"><div class="category-content">Items</div></a>
+  </div>
+</div>
+
+<!-- New section: Newest Items -->
+<div class="newitems" style="text-align: center;">
+  <h2>newest items</h2>
+</div><div class="newest-items-container">
+  <div class="newest-item">
+    <a href="/info?id={{products[0][0]}}">
+      <img src="{{products[0][3]}}" alt="Item 1">
+      <div class="newest-item-title">{{products[0][1]}}</div>
+      <div class="newest-item-description">{{products[0][2]}}</div>
+    </a>
+  </div>
+  <div class="newest-item">
+    <a href="/info?id={{products[1][0]}}">
+      <img src="{{products[1][3]}}" alt="Item 2">
+      <div class="newest-item-title">{{products[1][1]}}</div>
+      <div class="newest-item-description">{{products[1][2]}}</div>
+    </a>
+  </div>
+  <div class="newest-item">
+    <a href="/info?id={{products[2][0]}}">
+      <img src={{products[2][3]}} alt="Item 3">
+      <div class="newest-item-title">{{products[2][1]}}</div>
+      <div class="newest-item-description">{{products[2][2]}}</div>
+    </a>
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+  <a href="/"><button class="shop-all-button">View All Items</button></a>
+</div>
+<div class="section-container">
+  <div class="section-image">
+    <img src="https://assets.vogue.com/photos/5f8c69ceb2d2a3c9f097712b/1:1/w_2325,h_2325,c_limit/VO1120_Cover.jpg" alt="Picture">
+  </div>
+
+  <div class="section-content">
+    <h2>¿Quieres matar?</h2>
+    <p>Embark on a seamless path to success in the realm of high fashion. Begin your journey of selling exquisite designer garments to discerning fashion enthusiasts who will cherish and care for your creations. Experience our unparalleled seller fees and user-friendly interface, tailored to meet the needs of professionals in the industry.</p>
+    <a href="/signup" class="section-button">Sell with us</a>
   </div>
 </div>
 {% endblock %}

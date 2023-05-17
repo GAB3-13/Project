@@ -28,7 +28,7 @@
                         <td>{{ order.size }}</td>
                         <td>{{ order.price }}</td>
                         <td>{{ order.description }}</td>
-                        <td><img src="{{ order.image }}" alt="Product Image" width="100" height="100"></td>
+                        <td><img src="{{ order.image }}" alt="Product Image" width="100" max-height="auto"></td>
                         <td>{{ order.vendor }}</td>
                         <td>{{ order.status }}</td>
                         <td><a href="/review?product_id={{ order.product_id}}">Leave Review</a></td>

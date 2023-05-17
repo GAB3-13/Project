@@ -21,7 +21,6 @@ def home():
     cursor = mydb.cursor()
     query = ("SELECT id, title,image, price FROM products")
     cursor.execute(query)
-    # store the results in a list of dictionaries
     items = []
     for (id, title, image, price) in cursor:
         items.append({'id': id, 'title': title,'image': image,'price': price})
@@ -29,7 +28,7 @@ def home():
 @app.route('/login', methods =['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form.get('email-input'):  # check if email-input is submitted
+        if request.form.get('email-input'):
             email = request.form['email-input']
             if 'username' in session:
                 session.pop('username')
@@ -44,13 +43,11 @@ def login():
                     return redirect(url_for('emaillog', email=email))
                 else:
                     return render_template('signup.html', error_message='No account with this email please sign up')
-        elif request.form.get('username-input'):  # check if username-input is submitted
+        elif request.form.get('username-input'):
             username = request.form['username-input']
-            # session['username'] = username  # store username in the session
             if 'email' in session:
                 session.pop('email')
             else:
-                # Check the database for the username and password
                 mycursor = mydb.cursor()
                 sql = "SELECT * FROM users WHERE username = %s"
                 val = (username,)
@@ -62,13 +59,21 @@ def login():
                 else:
                     return render_template('signup.html', error_message='No account with this username please sign up')
         else:
-            # print('1')
             return render_template('login.html')
     else:
-        # print('2')
         return render_template('login.html')
     return render_template('login.html')
-
+@app.route('/futurehome')
+def home1():
+    cursor = mydb.cursor()
+    query = ("SELECT * FROM products ORDER BY id DESC LIMIT 3")
+    cursor.execute(query)
+    # cursor.execute("SELECT * FROM products ORDER BY id DESC LIMIT 3")
+    products = cursor.fetchall()
+    print(products)
+    cursor.close()
+    # mydb.close()
+    return render_template('home1.html', products=products)
 @app.route('/login/email-login', methods=['GET', 'POST'])
 def emaillog():
     if 'email' in session:
@@ -103,12 +108,12 @@ def emaillog():
                     session['logged_in'] = True
                     session['id'] = result[0]
                     session['username'] = result[1]
-                    return redirect(url_for('vendor'))  # Redirect to vendor login
+                    return redirect(url_for('vendor'))
             else:
-                if result[4] == password:  # Check if the password is correct for other users
+                if result[4] == password:
                     session['logged_in'] = True
                     session['id'] = result[0]
-                    return redirect(url_for('home'))  # Redirect to home page on successful login
+                    # return redirect(url_for('home'))
         return render_template('email-login.html', email=email, username=username)
 
     return render_template('email-login.html', email=email, username=username)
@@ -122,7 +127,6 @@ def signup():
         password = request.form['password']
         account_type = request.form['account_type']
 
-        # Insert the user data into the MySQL table
         cursor = mydb.cursor()
         query = "INSERT INTO users (username, first_name, email, password, account_type) VALUES (%s, %s, %s, %s, %s)"
         values = (username, first_name, email, password, account_type)
@@ -141,7 +145,6 @@ def vendor():
     # print(id)
     # print(username)
 
-    # Check if the user is a vendor
     account_query = "SELECT account_type FROM users WHERE id = %s AND username = %s"
     cursor.execute(account_query, (id, username))
     account_type = cursor.fetchone()
@@ -149,7 +152,6 @@ def vendor():
     if account_type is None or account_type[0] != 'Vendor':
         return "You are not a vendor."
 
-    # Retrieve vendor's listed items
     items_query = "SELECT id, title, description, image, category, inventory, price FROM products WHERE vendor = %s"
     cursor.execute(items_query, (username,))
     items = []
@@ -164,7 +166,6 @@ def vendor():
             'price': price
         })
 
-    # Retrieve pending orders for the vendor
     orders_query = """
     SELECT oc.order_id, oc.user_id, oc.order_number, oc.total_price, oc.status
     FROM orders AS oc
@@ -195,7 +196,6 @@ def update_order_status():
 
         cursor = mydb.cursor()
 
-        # Update the status of the order in the database
         update_query = "UPDATE orders SET status = %s WHERE order_id = %s"
         cursor.execute(update_query, (new_status, order_id))
         mydb.commit()
@@ -208,7 +208,6 @@ def adminlog():
     username = session.get('username')
     id = session.get('id')
 
-    # Check if the user is an admin
     account_query = "SELECT account_type FROM users WHERE id = %s AND username = %s"
     cursor.execute(account_query, (id, username))
     account_type = cursor.fetchone()
@@ -216,7 +215,6 @@ def adminlog():
     if account_type is None or account_type[0] != 'Admin':
         return "You are not an admin."
 
-    # Retrieve all items
     cursor = mydb.cursor()
     query = "SELECT id, title, description, image, category, inventory, price FROM products"
     cursor.execute(query)
@@ -232,7 +230,6 @@ def adminlog():
             'price': price
         })
 
-    # Retrieve returns/refunds
     query = "SELECT return_id, order_id, user_id, product_id, return_type, title, description, demand, status FROM returns_refunds"
     cursor.execute(query)
     returns = []
@@ -256,14 +253,12 @@ def update_status():
     return_id = request.form.get('return_id')
     status = request.form.get('status')
 
-    # Update the status in the returns_refunds table
     cursor = mydb.cursor()
     query = "UPDATE returns_refunds SET status = %s WHERE return_id = %s"
     values = (status, return_id)
     cursor.execute(query, values)
     mydb.commit()
     cursor.close()
-
     return redirect('/adminlogin')
 
 @app.route('/Womenswear')
@@ -271,8 +266,6 @@ def Women():
     cursor = mydb.cursor()
     query = ("SELECT id, title,image, price FROM products where category = 'womenswear'")
     cursor.execute(query)
-
-    # store the results in a list of dictionaries
     items = []
     for (id, title, image, price) in cursor:
         items.append({'id': id, 'title': title,'image': image,'price': price})
@@ -283,11 +276,9 @@ def Mens():
     cursor = mydb.cursor()
     query = ("select id,title,image,price from products where category = 'menswear'")
     cursor.execute(query)
-    # store the results in a list of dictionaries
     items = []
     for (id, title, image, price) in cursor:
         items.append({'id': id, 'title': title,'image': image,'price': price})
-    # print(items)
     return render_template('menswear.html', items=items)
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -297,7 +288,6 @@ def search():
         query = f"SELECT id,title,image,price FROM products WHERE description like \'%{search_text}%\' or title like \'%{search_text}%\'"
         cursor.execute(query)
         items = []
-        # print(items)
         for (id, title, image, price) in cursor:
             items.append({'id': id, 'title': title, 'image': image, 'price': price})
         return render_template('home.html', items=items)
@@ -315,7 +305,7 @@ def info():
             return render_template('item.html')
     else:
         id = request.args.get('id')
-        print(id)
+        # print(id)
         cursor = mydb.cursor()
         query = """
             SELECT p.id, p.title, p.description, p.image, p.category, p.inventory, p.price, ps.size, ps.quantity
@@ -326,7 +316,7 @@ def info():
         values = (id,)
         cursor.execute(query, values)
         items = cursor.fetchall()
-        print(items)
+        # print(items)
         # print(items)
         query2 = """
             SELECT p.id, p.title, p.description, p.image, p.category, p.inventory, p.price
@@ -354,16 +344,14 @@ def info():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
     if 'username' in session or 'email' in session:
-        user_id = session.get('id')  # Assuming the user ID is stored in the session as 'user_id'
+        user_id = session.get('id')
 
         cursor = mydb.cursor()
         query = "SELECT  c.product_id, c.cart_id, c.size, p.title, p.description, p.image, p.price, c.quantity FROM cart AS c JOIN products AS p ON c.product_id = p.id where c.user_id = %s"
 
         values = (user_id,)
         cursor.execute(query, values)
-        print(values)
-
-        # Store the results in a list of dictionaries
+        # print(values)
         items = []
         for (product_id, cart_id, size, title, description, image, price, quantity) in cursor:
             items.append({'product_id': product_id, 'cart_id': cart_id, 'size': size, 'title': title, 'description': description, 'image': image, 'price': price, 'quantity': quantity})
@@ -384,13 +372,12 @@ def cart():
 @app.route('/wish', methods=['GET', 'POST'])
 def wish():
     if 'username' in session or 'email' in session:
-        user_id = session.get('id')  # Assuming the user ID is stored in the session as 'user_id'
+        user_id = session.get('id')
         cursor = mydb.cursor()
         query = "SELECT c.product_id,c.cart_id,p.title, p.description, p.image, p.price, ps.size FROM wish AS c JOIN products AS p ON c.product_id = p.id JOIN product_size AS ps ON c.product_id = ps.sizeid WHERE c.user_id = %s"
         values = (user_id,)
         cursor.execute(query, values)
 
-        # Store the results in a list of dictionaries
         items = []
         for (product_id,cart_id, title, description, image, price, size) in cursor:
             items.append({'product_id': product_id,'cart_id': cart_id, 'title': title, 'description': description, 'image': image, 'price':price, 'size': size})
@@ -401,10 +388,10 @@ def wish():
 @app.route('/addcart', methods=['GET', 'POST'])
 def addcart():
     if 'username' in session or 'email' in session:
-        user_id = session.get('id')  # Assuming the user ID is stored in the session as 'user_id'
-        product_id = request.args.get('id')  # Assuming the product ID is passed as a query parameter
-        selected_size = request.args.get('size')  # Retrieve the selected size from the query parameters
-        print(user_id, product_id, selected_size)
+        user_id = session.get('id')
+        product_id = request.args.get('id')
+        selected_size = request.args.get('size')
+        # print(user_id, product_id, selected_size)
 
         cursor = mydb.cursor()
         query = "INSERT INTO cart (user_id, product_id, size,quantity) VALUES (%s, %s, %s,1)"
@@ -478,9 +465,16 @@ def edit():
         category = request.form.get('category')
         inventory = request.form.get('inventory')
         price = request.form.get('price')
-        # print(id, title, description, image, category, inventory, price)
+        print(id, title, description, image, category, inventory, price)
         cursor = mydb.cursor()
-        return redirect('/adminlogin')
+        query = "UPDATE products SET title = %s,description = %s,image =%s,category =%s,inventory =%s,price =%s WHERE id = %s;"
+        values = (title,description,image,category,inventory,price,id)
+        cursor.execute(query, values)
+        mydb.commit()
+        item = cursor.fetchone()
+
+        print(item)
+        return redirect('/futurehome')
     else:
         id = request.args.get('id')
         # print(id)
@@ -492,29 +486,17 @@ def edit():
         # print(item)
         return render_template('edit.html', item=item,id=id)
 
-
-
-
-
-
 @app.route('/delete', methods=['POST'])
 def deleteitem():
     item_id = request.form.get('id')
     # print(item_id)
     cursor = mydb.cursor()
-
-    # Delete from the cart table
     cart_delete_query = "DELETE FROM cart WHERE product_id = %s"
     cursor.execute(cart_delete_query, (item_id,))
-
-    # Delete from the additional table (assuming the table name is 'additional_table')
     product_size_delete_query = "DELETE FROM product_size WHERE mainid = %s"
     cursor.execute(product_size_delete_query, (item_id,))
-
-    # Delete from the products table
     products_delete_query = "DELETE FROM products WHERE id = %s"
     cursor.execute(products_delete_query, (item_id,))
-
     mydb.commit()
     return redirect('/vendor')
 
@@ -530,12 +512,9 @@ def add_item():
         image = request.form.get('image')
         category = request.form.get('category')
         price = request.form.get('price')
-
-        # Get the user ID from the session
         user_id = session.get('id')
 
         cursor = mydb.cursor()
-        # Retrieve the username associated with the user ID
         cursor.execute("SELECT username FROM users WHERE id = %s", (user_id,))
         result = cursor.fetchone()
 
@@ -548,8 +527,6 @@ def add_item():
         values = (title, description, image, category, price, username)
         cursor.execute(query, values)
         mydb.commit()
-
-        # Get the last inserted product ID
         product_id = cursor.lastrowid
         cursor.close()
         session['product_id'] = product_id
@@ -564,8 +541,8 @@ def add_size():
     product_id = session.get('product_id')
     print(product_id)
     if request.method == 'POST':
-        sizes = request.form.getlist('size[]')  # Retrieve a list of sizes
-        inventories = request.form.getlist('inventory[]')  # Retrieve a list of inventories
+        sizes = request.form.getlist('size[]')
+        inventories = request.form.getlist('inventory[]')
 
         if len(sizes) != len(inventories):
             return "Invalid size and inventory data"
@@ -588,8 +565,8 @@ def add_size():
 import time
 
 def generate_order_number(user_id):
-    timestamp = int(time.time())  # Get current timestamp
-    order_number = f"{user_id}_{timestamp}"  # Concatenate user ID and timestamp
+    timestamp = int(time.time())
+    order_number = f"{user_id}_{timestamp}"
     return order_number
 
 def calculate_total_price(items):
@@ -632,7 +609,7 @@ def get_cart_items(user_id):
 
 @app.route('/checkout', methods=['GET','POST'])
 def checkout():
-    if 'id' in session:  # Assuming the user ID is stored in the session as 'id'
+    if 'id' in session:
         user_id = session['id']
         cursor = mydb.cursor()
         query = """
@@ -667,7 +644,7 @@ def checkout():
 
 @app.route('/order_complete', methods=['POST'])
 def order_complete():
-    if 'id' in session:  # Assuming the user ID is stored in the session as 'id'
+    if 'id' in session:
         user_id = session['id']
         cursor = mydb.cursor()
         query = """
@@ -788,17 +765,11 @@ def returns():
         product_id = request.form.get('product_id')
         order_id = request.form.get('order_id')
         print(product_id,order_id)
-
         complaint_type = request.form.get('complaint_type')
         complaint_comment = request.form.get('complaint_comment')
         title = request.form.get('title')
-
-        # Get the user ID from the session
         user_id = session.get('id')
-
         cursor = mydb.cursor()
-
-        # Insert the complaint into the returns_refunds table
         query = "INSERT INTO returns_refunds (order_id, user_id, product_id, return_type, title, description, demand) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         values = (order_id, user_id, product_id, complaint_type, title, complaint_comment, complaint_type)
         cursor.execute(query, values)
@@ -817,11 +788,8 @@ def review():
         query = "SELECT id,title, description, image, price, vendor FROM products WHERE id = %s"
         cursor.execute(query, (item_id,))
         item = cursor.fetchone()
-
         if item is None:
             return "Item not found."
-
-        # Unpack the item tuple and convert it to a dictionary
         id,title, description, image, price, vendor = item
         item_dict = {
             'id' : id,
@@ -831,21 +799,14 @@ def review():
             'price': price,
             'vendor': vendor,
         }
-
-
         if item is None:
             return "Item not found."
-
-        # Render the review template with the item details
         return render_template('review.html', item=item_dict)
 
     elif request.method == 'POST':
-        # Get the review data from the form submission
         rating = request.form.get('rating')
         comment = request.form.get('comment')
         item_id = request.form.get('item_id')
-
-        # Insert the review into the items_review table in the database
         cursor = mydb.cursor()
         query = "INSERT INTO items_review (item_id, rating, comment) VALUES (%s, %s, %s)"
         cursor.execute(query, (item_id, rating, comment))
@@ -856,25 +817,16 @@ def review():
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
     item_id = request.form.get('item_id')
-
-    # print(item_id)
     vendor = request.form.get('vendor')
     user_id = session.get('id')
     rating = int(request.form.get('rating'))
     comment = request.form.get('comment')
-
-    # Perform validation if needed (e.g., check if the user has already reviewed the item)
-
-    # Insert the review into the database
     cursor = mydb.cursor()
     query = "INSERT INTO reviews (item_id, vendor, user_id, rating, comment) VALUES (%s, %s, %s, %s, %s);"
     values = (item_id, vendor, user_id, rating, comment)
     cursor.execute(query, values)
     mydb.commit()
-
-    # Optional: Perform additional actions or show a success message
-
-    return redirect('/userorder')
+    return redirect('/userorders')
 
 
 @app.route('/logout', methods=['GET'])
@@ -894,21 +846,12 @@ def chat():
         receiver_id = int(request.form.get('receiver_id', 0))
         send_chat_message(sender_id, receiver_id, message)
         print(sender_id, receiver_id, message)
-
-    # Retrieve the user ID from the session
     sender_id = session['id']
-
-    # Retrieve the list of vendors and admins for the dropdown
     vendors = get_vendors()
     admins = get_admins()
-
-    # Get the chat messages for the sender and receiver
     receiver_id = int(request.args.get('receiver_id', 0))
-    # print(receiver_id)
     chat_messages = get_chat_messages(sender_id, receiver_id)
     print(chat_messages)
-
-    # Render the chat.html template with the chat messages
     return render_template('chat.html', chat_messages=chat_messages, receiver_id=receiver_id, vendors=vendors, admins=admins)
 
 
@@ -921,75 +864,46 @@ def select_receiver():
 
 
 def send_chat_message(sender_id, receiver_id, message):
-    # Create a cursor to execute SQL queries
     cursor = mydb.cursor()
-
-    # Insert the chat message into the chat table
     query = "INSERT INTO chat (sender_id, receiver_id, message, timestamp) VALUES (%s, %s, %s, %s)"
     timestamp = datetime.now()
     values = (sender_id, receiver_id, message, timestamp)
     cursor.execute(query, values)
-
-    # Commit the changes to the database
     mydb.commit()
-
-    # Close the cursor
     cursor.close()
 
 def get_chat_messages(sender_id, receiver_id):
-    # Create a cursor to execute SQL queries
     cursor = mydb.cursor()
-
-    # Retrieve chat messages between the sender and receiver
     query = "SELECT * FROM chat WHERE (sender_id = %s AND receiver_id = %s) OR (sender_id = %s AND receiver_id = %s) ORDER BY timestamp"
     values = (sender_id, receiver_id, receiver_id, sender_id)
     cursor.execute(query, values)
-
-    # Fetch all chat messages
     chat_messages = cursor.fetchall()
     print(chat_messages)
-    # Close the cursor
     cursor.close()
 
     return chat_messages
 
 def get_vendors():
-    # Create a cursor to execute SQL queries
     cursor = mydb.cursor()
-
-    # Retrieve vendors from the users table
     query = "SELECT id, username FROM users WHERE account_type = 'vendor'"
     cursor.execute(query)
-
-    # Fetch all vendor data
     vendors = cursor.fetchall()
     print(vendors)
-    # Close the cursor
     cursor.close()
 
     return vendors
 
 def get_admins():
-    # Create a cursor to execute SQL queries
     cursor = mydb.cursor()
-
-    # Retrieve admins from the users table
     query = "SELECT id, username FROM users WHERE account_type = 'admin'"
     cursor.execute(query)
-
-    # Fetch all admin data
     admins = cursor.fetchall()
-
-    # Close the cursor
     cursor.close()
-
     return admins
 @app.route('/process_payment', methods=['POST'])
 def paid():
     return render_template('paid.html')
-@app.route('/futurehome')
-def home1():
-    return render_template('home1.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

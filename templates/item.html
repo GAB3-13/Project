@@ -58,9 +58,11 @@
   }
 
   .add-to-wishlist {
+      background-color: black;
     color: white;
     padding: 10px 20px;
     border: none;
+    opacity:0.6;
     cursor: pointer;
     margin-right: 10px;
   }
@@ -72,6 +74,7 @@
   }
 
   .review {
+
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
@@ -112,7 +115,7 @@
       {% for review in reviews %}
       <div class="review">
         <p>User: {{ review.username }}</p>
-        <p>Item: {{ review.description }}/5</p>
+<!--        <p>Item: {{ review.description }}</p>-->
         <p>Rating: {{ review.rating }}/5</p>
         <p>Comment: {{ review.comment }}</p>
       </div>

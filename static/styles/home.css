@@ -1,21 +1,52 @@
 /* General styles */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;1,300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;1,300&display=swap');
 body {
-  margin: 0;
+margin-top: 50px;
   padding: 0;
-  font-family: Arial, sans-serif;
+font-family: 'Source Serif Pro', serif;
     list-style: none;
 
 }
 
-/* Header styles */
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 99%;
+  height: 50px;
   background-color: black;
-  color: white;
+  color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0 10px;
+  z-index: 9999;
+  transition: background-color 0.3s ease;
 }
+header.sticky {
+  position: fixed;
+  background-color: rgba(33, 30, 31);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer
+{
+position:relative;
+  bottom: 0;
+  left: 0;
+
+background-color:black;
+      color: black;
+      padding: 20px;}
+
 
 .logo {
   font-size: 2rem;
@@ -58,8 +89,8 @@ nav a {
   margin-left: 20px;
 }
 
-/* Main content styles */
 main {
+flex:1
   background-color: white;
   text-align: center;
   padding: 100px 20px;
@@ -68,11 +99,13 @@ main {
 h1 {
   font-size: 3rem;
   margin-bottom: 20px;
+  font-family: 'Source Serif Pro', serif;
 }
 
 p {
   font-size: 1.2rem;
   margin-bottom: 40px;
+  font-family: 'Source Serif Pro', serif;
 }
 
 .btn {
@@ -91,49 +124,37 @@ p {
 /* Style for the content box */
 .contentbox {
   display: inline-block;
-  width: 30%; /* Set the width to 30% to allow three boxes to fit horizontally */
-  margin: 1.1%; /* Add some margin around the box */
-  text-align: center; /* Center the content within the box */
-  box-sizing: border-box; /* Include padding and border within the box */
-  border: 1px solid #ccc; /* Add a border to the box */
-  padding: 10px; /* Add some padding to the box */
-  height: 700px; /* Set a fixed height for the box */
+  width: 30%;
+  margin: 1.1%;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 400px;
 }
 
 .imagebox
 {
-height: 500px;
-
+height: 300px;
  }
 
-/* Style for the box title */
 .contentbox h3 {
-  margin-top: 0; /* Remove default top margin from the title */
+font-family: 'Source Serif Pro', serif;
+  font-weight: bold;
+  color: black;
+  margin-top: 0;
 }
 
-/* Style for the box image */
-.contentbox img {
-  margin-bottom: 10px; /* Add some margin below the image */
-}
-
-/* Style for the box price */
 .contentbox p {
-  font-weight: bold; /* Make the price bold */
+font-family: 'Source Serif Pro', serif;
+  color: black;
 }
 
-/* Style for the box link */
 .contentbox a {
-  display: block; /* Make the link a block element to fill the width of the box */
-  margin-top: 10px; /* Add some margin above the link */
+  display: block;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  color: black;
 }
-
-/* Footer styles */
-footer {
-  background-color: black;
-  color: white;
-  padding: 20px;
-}
-
 .footer-nav ul {
   list-style: none;
   margin: 0;
@@ -202,6 +223,13 @@ font-size: 16px;
 margin-top: 10px;
 width: 100%;
 }
+.orderimg
+{
+max-height: 100px:
+width:auto;
+
+}
+
 .admindisplay
 {
 display:inline-block;

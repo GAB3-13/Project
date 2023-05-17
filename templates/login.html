@@ -2,19 +2,80 @@
 
 {% block content %}
 
-  <main>
-    <h1>Enter your email</h1>
-    <form action="/login" method="POST">
-      <label for="email-input">Email:</label>
-      <input type="email" id="email-input" name="email-input">
-      <input type="submit" value="Submit">
-    </form>
-        <h3>Already a User?</h3>
-    <form action="/login" method="POST">
-      <label for="username-input">Username</label>
-      <input type="text" id="username-input" name="username-input">
-      <input type="submit" value="Submit">
-    </form>
-  </main>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+  }
+
+  main {
+    text-align: center;
+  }
+
+  form {
+    margin-top: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="email"],
+  input[type="text"] {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 250px;
+  }
+
+  input[type="submit"] {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #555;
+  }
+
+  h3 {
+    margin-top: 20px;
+  }
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: black;
+    padding: 20px;
+}
+</style>
+
+<main>
+  <h1>Enter your email</h1>
+  <form action="/login" method="POST">
+    <label for="email-input">Email:</label>
+    <input type="email" id="email-input" name="email-input">
+    <input type="submit" value="Submit">
+  </form>
+
+  <h3>Already a User?</h3>
+  <form action="/login" method="POST">
+    <label for="username-input">Username</label>
+    <input type="text" id="username-input" name="username-input">
+    <input type="submit" value="Submit">
+  </form>
+</main>
 
 {% endblock %}

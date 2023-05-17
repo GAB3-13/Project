@@ -19,10 +19,15 @@
 
     .sender-message {
         text-align: right;
+        margin-left: auto; /* Added this line */
+        background-color: blue;
+
     }
 
     .receiver-message {
         text-align: left;
+        margin-right: auto; /* Added this line */
+
     }
 
     .message-text {
@@ -57,22 +62,23 @@
         margin-bottom: 10px;
     }
 </style>
+
 {% endblock %}
 
 {% block content %}
 <div class="chat-container">
     <div class="dropdown">
-            <form id="receiver-form" method="POST" action="/receiver">
+        <form id="receiver-form" method="POST" action="/receiver">
             <select id="receiver-select" name="receiver_id">
                 <option value="">Select a receiver</option>
                 <optgroup label="Vendors">
                     {% for vendor in vendors %}
-                        <option value="{{ vendor[0] }}">{{ vendor[1] }}</option>
+                    <option value="{{ vendor[0] }}">{{ vendor[1] }}</option>
                     {% endfor %}
                 </optgroup>
                 <optgroup label="Admins">
                     {% for admin in admins %}
-                        <option value="{{ admin[0] }}">{{ admin[1] }}</option>
+                    <option value="{{ admin[0] }}">{{ admin[1] }}</option>
                     {% endfor %}
                 </optgroup>
             </select>
@@ -81,12 +87,14 @@
     </div>
     <ul class="chat-messages">
         {% for chat_message in chat_messages %}
-            <li class="chat-message {% if chat_message.sender_id == current_user_id %}sender-message{% else %}receiver-message{% endif %}">
+        <li class="chat-message {% if chat_message.sender_id == current_user_id %}sender-message{% else %}receiver-message{% endif %}">
+            <div class="message-container {% if chat_message.sender_id == current_user_id %}sender{% else %}receiver{% endif %}">
                 <div class="message-text">
                     {{ chat_message[3] }}
                     <p class="message-timestamp">{{ chat_message.timestamp }}</p>
                 </div>
-            </li>
+            </div>
+        </li>
         {% endfor %}
     </ul>
     <form id="chat-form" class="chat-form" method="POST" action="/chat">

@@ -21,6 +21,7 @@
       max-width: 50px;
       margin-right: 10px;
     }
+
   </style>
   {% endblock %}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -30,6 +31,14 @@
         $(".search-bar").toggle();
       });
     });
+    $(window).scroll(function() {
+  if ($(window).scrollTop() > 0) {
+    $('header').addClass('sticky');
+  } else {
+    $('header').removeClass('sticky');
+  }
+});
+
   </script>
 </head>
 <body>
@@ -40,14 +49,13 @@
         <li><a href="/Menswear">Menswear</a></li>
         <li><a href="/Womenswear">Womenswear</a></li>
         <li><a href="/Items">Items</a></li>
-        <li><div class="search-icon">Search</div>
-</li>
+        <li><div class="search-icon">Search</div></li>
               <form class="search-bar" method="post" action="/search">
         <input type="text" name="search_text">
       </form>
       </ul>
     </nav>
-    <div class="logo"><a href="/">Closet q mata'</a></div>
+    <div class="logo"><a href="/futurehome">Closet q mata'</a></div>
     <div class="user-nav">
       <a href="/login">Login/Sign-Up</a>
       <a href="/cart">Shopping cart</a>
@@ -58,12 +66,11 @@
   </header>
   {% block content %}
   {% for item in items %}
-    <div class="contentbox">
+    <a href="/info?id={{ item.id }}"><div class="contentbox">
       <div class="imagebox"><img src="{{item.image}}" alt="itemimg" style="max-width:100%; max-height:100%" ></div>
       <h3>{{item.title}}</h3>
-      <p>Price: {{ item.price }}</p>
-      <a href="/info?id={{ item.id }}">View Details</a>
-    </div>
+      <p>${{ item.price }}</p>
+    </div></a>
   {% endfor %}
   {% endblock %}
   <footer>
@@ -72,7 +79,7 @@
         <li><a href="/vendor">Vendor Page</a></li>
         <li><a href="/adminlogin">Admin Page</a></li>
         <li><a href="/userorders">Your Orders</a></li>
-        <li><a href="#">Locations</a></li>
+        <li><a href="/chat">Chat</a></li>
       </ul>
     </div>
   </footer>
