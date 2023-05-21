@@ -73,7 +73,7 @@ def home1():
     print(products)
     cursor.close()
     # mydb.close()
-    return render_template('home1.html', products=products)
+    return render_template('index.html', products=products)
 @app.route('/login/email-login', methods=['GET', 'POST'])
 def emaillog():
     if 'email' in session:
